@@ -45,12 +45,24 @@ public class UIManager : MonoBehaviour
     public void UpdateMissionText(MiniGame miniGame, int missionScore)
     {
         if(miniGame == MiniGame.DragonRunner)
+        {
             missionText.text = "Survive : " + missionScore.ToString() + " Secs";
+            missionText.color = Color.white;
+        }
     }
 
     // 미니 게임 성공/실패 보여주기
     public void UpdateMissionText(bool isClear)
     {
-        missionText.text = isClear ? "Clear!!" : "Failed...";
+        if (isClear)
+        {
+            missionText.text = "Clear!!";
+            missionText.color = Color.green;
+        }
+        else
+        {
+            missionText.text = "Failed...";
+            missionText.color = Color.red;
+        }
     }
 }
