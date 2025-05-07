@@ -21,16 +21,19 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
+    // 페이드인 효과
     public void FadeIn()
     {
         fadeImageAnimator.SetBool(Fade, false);
     }
 
+    // 페이드아웃 효과
     public void FadeOut()
     {
         fadeImageAnimator.SetBool(Fade, true);
     }
 
+    // 리더보드 업데이트
     public void UpdateLeaderboard(MiniGame miniGame)
     {
         scoreTexts[(int)miniGame].text = MainGameManager.Instance.GetPrefsData(miniGame, PrefsKey.BestScore).ToString();
@@ -38,12 +41,14 @@ public class UIManager : MonoBehaviour
         clearTexts[(int)miniGame].text = MainGameManager.Instance.GetPrefsData(miniGame, PrefsKey.Clear).ToString();
     }
 
-    public void UpdateMissionText(MiniGame miniGame, int missioniTime)
+    // 미니 게임 미션 보여주기
+    public void UpdateMissionText(MiniGame miniGame, int missionScore)
     {
         if(miniGame == MiniGame.DragonRunner)
-            missionText.text = "Survive : " + missioniTime.ToString() + " Secs";
+            missionText.text = "Survive : " + missionScore.ToString() + " Secs";
     }
 
+    // 미니 게임 성공/실패 보여주기
     public void UpdateMissionText(bool isClear)
     {
         missionText.text = isClear ? "Clear!!" : "Failed...";

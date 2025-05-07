@@ -120,22 +120,21 @@ public class MainGameManager : MonoBehaviour
     {
         string key = GetPrefsKey(miniGame, PrefsKey.BestScore);
 
+        // 최고 점수 업데이트
         if (PlayerPrefs.GetInt(key, 0) < score)
         {
-            if (missionScore[(int)miniGame] <= score)
-            {
-                string clearKey = GetPrefsKey(miniGame, PrefsKey.Clear);
-                PlayerPrefs.SetInt(clearKey, PlayerPrefs.GetInt(clearKey, 0) + 1);
-                missionScore[(int)miniGame]++;
-                UIManager.Instance.UpdateMissionText(true);
-            }
-            else
-            {
-                UIManager.Instance.UpdateMissionText(false);
-            }
-
             PlayerPrefs.SetInt(key, score);
         }
+
+        // 미션 성공 업데이트
+        if (missionScore[(int)miniGame] <= score)
+        {
+            string clearKey = GetPrefsKey(miniGame, PrefsKey.Clear);
+            PlayerPrefs.SetInt(clearKey, PlayerPrefs.GetInt(clearKey, 0) + 1);
+            missionScore[(int)miniGame]++;
+            UIManager.Instance.UpdateMissionText(true);
+        }
+        else UIManager.Instance.UpdateMissionText(false);
     }
 
     // PlayerPrefs 값 반환
