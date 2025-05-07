@@ -29,7 +29,7 @@ public class RunnerGameManager : MonoBehaviour
     // 변수
     [Header("Variables")]
     [SerializeField] private float timeBetweenSpawn;
-    [SerializeField][Range(0f, 1f)] private float randomRate;
+    [SerializeField] private float randomInterval;
 
     public bool IsPlaying { get; private set; }
     private float checkSpawnTime;
@@ -47,6 +47,7 @@ public class RunnerGameManager : MonoBehaviour
     {
         lookDragonVector = Camera.main.transform.position - dragon.position;
         checkSpawnTime = timeBetweenSpawn;
+        randomInterval = randomInterval * 0.5f;
 
         startPanel.SetActive(true);
         timeText.gameObject.SetActive(false);
@@ -66,7 +67,7 @@ public class RunnerGameManager : MonoBehaviour
             if (checkSpawnTime >= timeBetweenSpawn)
             {
                 checkSpawnTime = 0;
-                timeBetweenSpawn = Random.Range(timeBetweenSpawn * (1 - randomRate), timeBetweenSpawn * (1 + randomRate));
+                timeBetweenSpawn = Random.Range(timeBetweenSpawn - randomInterval, timeBetweenSpawn + randomInterval);
                 SpawnObstacle();
             }
         }

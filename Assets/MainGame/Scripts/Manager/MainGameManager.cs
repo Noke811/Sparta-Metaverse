@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 public enum MiniGame
 {
     DragonRunner,
+    Stack,
+    HitTarget,
 }
 
 public enum PrefsKey
@@ -12,6 +14,7 @@ public enum PrefsKey
     BestScore,
     Try,
     Clear,
+    Mission,
 }
 
 public class MainGameManager : MonoBehaviour
@@ -21,7 +24,6 @@ public class MainGameManager : MonoBehaviour
 
     // 변수
     public bool IsStopped { get; private set; }
-    private int[] missionScore = new int[3];
     WaitForSeconds waitOverTime = new WaitForSeconds(1f);
 
     private void Awake()
@@ -29,11 +31,6 @@ public class MainGameManager : MonoBehaviour
         Instance = this;
 
         IsStopped = false;
-    }
-
-    private void Start()
-    {
-        missionScore[0] = 10;
     }
 
     // 다음 스테이지로 이동
@@ -49,7 +46,7 @@ public class MainGameManager : MonoBehaviour
         yield return waitOverTime;
 
         StageManager.Instance.ChangeCurrentStage();
-        UIManager.Instance.UpdateMissionText(MiniGame.DragonRunner, missionScore[0]);
+        UIManager.Instance.UpdateMissionText(MiniGame.DragonRunner, GetPrefsData(MiniGame.DragonRunner, PrefsKey.Mission));
         yield return new WaitForSeconds(0.5f);
 
         UIManager.Instance.FadeIn();
@@ -87,8 +84,7 @@ public class MainGameManager : MonoBehaviour
     // 미니 게임 씬 언로드
     public void UnloadMiniGame(MiniGame miniGame)
     {
-        string tryKey = GetPrefsKey(miniGame, PrefsKey.Try);
-        PlayerPrefs.SetInt(tryKey, PlayerPrefs.GetInt(tryKey, 0) + 1);
+        SetPrefsData(miniGame, PrefsKey.Try);
 
         UIManager.Instance.UpdateLeaderboard(miniGame);
 
@@ -121,17 +117,14 @@ public class MainGameManager : MonoBehaviour
         string key = GetPrefsKey(miniGame, PrefsKey.BestScore);
 
         // 최고 점수 업데이트
-        if (PlayerPrefs.GetInt(key, 0) < score)
-        {
-            PlayerPrefs.SetInt(key, score);
-        }
+        SetPrefsData(miniGame, PrefsKey.BestScore, score);
 
-        // 미션 성공 업데이트
-        if (missionScore[(int)miniGame] <= score)
+        // 미션 성공 업데이트 / 미션 난이도 상승
+        if (GetPrefsData(miniGame, PrefsKey.Mission) <= score)
         {
-            string clearKey = GetPrefsKey(miniGame, PrefsKey.Clear);
-            PlayerPrefs.SetInt(clearKey, PlayerPrefs.GetInt(clearKey, 0) + 1);
-            missionScore[(int)miniGame]++;
+            SetPrefsData(miniGame, PrefsKey.Clear);
+            SetPrefsData(miniGame, PrefsKey.Mission);
+
             UIManager.Instance.UpdateMissionText(true);
         }
         else UIManager.Instance.UpdateMissionText(false);
@@ -140,7 +133,29 @@ public class MainGameManager : MonoBehaviour
     // PlayerPrefs 값 반환
     public int GetPrefsData(MiniGame miniGame, PrefsKey key)
     {
-        return PlayerPrefs.GetInt(GetPrefsKey(miniGame, key), 0);
+        int defaultValue = 0;
+        if (key == PrefsKey.Mission) defaultValue = 10;
+
+        return PlayerPrefs.GetInt(GetPrefsKey(miniGame, key), defaultValue);
+    }
+
+    // PlayerPrefs 값 세팅
+    public void SetPrefsData(MiniGame miniGame, PrefsKey key, int value = 0)
+    {
+        string keyStr = GetPrefsKey(miniGame, key);
+        int defaultValue = GetPrefsData(miniGame, key);
+
+        if(key == PrefsKey.BestScore)
+        {
+            if(defaultValue < value) PlayerPrefs.SetInt(keyStr, value);
+            return;
+        }
+        else if(key == PrefsKey.Mission)
+        {
+            PlayerPrefs.SetInt(keyStr, defaultValue + 5);
+            return;
+        }
+        PlayerPrefs.SetInt(keyStr, defaultValue + 1);
     }
 
     // PlayerPrefs 키값 변환
@@ -154,6 +169,8 @@ public class MainGameManager : MonoBehaviour
                 return "Try_" + miniGame.ToString();
             case PrefsKey.Clear:
                 return "Clear_" + miniGame.ToString();
+            case PrefsKey.Mission:
+                return "Mission_" + miniGame.ToString();
             default:
                 return "";
         }
