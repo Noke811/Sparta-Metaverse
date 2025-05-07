@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
-    [SerializeField] GameObject buttonUp;
-    [SerializeField] GameObject buttonDown;
+    // 외부 오브젝트
+    [SerializeField] protected GameObject buttonUp;
+    [SerializeField] protected GameObject buttonDown;
+    [SerializeField] protected StairController stair;
 
-    public StairController stair;
+    // 변수
+    protected bool isPush = false;
 
-    private bool isPush = false;
-
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         isPush = false;
 
@@ -17,7 +18,7 @@ public class ButtonController : MonoBehaviour
         buttonUp.SetActive(true);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (!isPush && collision.CompareTag("Player"))
         {

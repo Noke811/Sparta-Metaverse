@@ -5,16 +5,13 @@ public enum Stage
 {
     Main,
     Game,
-    LeaderBoad,
+    LeaderBoard,
 }
 
 public class StageManager : MonoBehaviour
 {
     // 싱글톤
     public static StageManager Instance { get; private set; }
-
-    // 상수
-    // 
 
     // 외부 오브젝트
     [SerializeField] GameObject[] stages;
@@ -25,13 +22,8 @@ public class StageManager : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] Transform teleportPosition;
 
-    // 프리팹
-
     // 변수
     private Stage currentStage;
-
-    // gameObject 컴포넌트
-    // 
 
     private void Awake()
     {
@@ -48,7 +40,6 @@ public class StageManager : MonoBehaviour
     {
         player.transform.position = teleportPosition.position;
 
-        // 아래는 임시로 작성
         switch (currentStage)
         {
             case Stage.Main:
@@ -56,11 +47,11 @@ public class StageManager : MonoBehaviour
                 break;
 
             case Stage.Game:
-                currentStage = Stage.LeaderBoad;
+                currentStage = Stage.LeaderBoard;
                 break;
 
-            case Stage.LeaderBoad:
-                currentStage = Stage.Main;
+            case Stage.LeaderBoard:
+                currentStage = Stage.Game;
                 break;
         }
 
@@ -74,7 +65,7 @@ public class StageManager : MonoBehaviour
             stages[i].SetActive(i == (int)stage);
         }
 
-        stair.MoveFrontTile(stage == Stage.LeaderBoad ? true : false);
+        stair.MoveFrontTile(stage == Stage.LeaderBoard ? true : false);
         interactionButton.SetActive(stage == Stage.Main ? true : false);
         miniGameButton.SetActive(stage == Stage.Game ? true : false);
     }

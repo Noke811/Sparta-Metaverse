@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // 변수
     [SerializeField] float speed = 3;
 
+    // 현재 오브젝트 컴포넌트
     Animator animator;
     SpriteRenderer spriteRenderer;
 
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsMove", true);
     }
 
+    // 좌우 이동에 따른 스프라이트 뒤집기
     void UpdateFacingDirection(float x)
     {
         if (x == 0f) return;

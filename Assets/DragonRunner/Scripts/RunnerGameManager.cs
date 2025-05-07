@@ -11,17 +11,25 @@ public class RunnerGameManager : MonoBehaviour
     static readonly int groundNumber = 4;
 
     // 외부 오브젝트
+    [Header("Objcet Controlls")]
     [SerializeField] Transform dragon;
     [SerializeField] Transform obstacleSpawnPosition;
 
+    [Header("UI Controlls")]
     [SerializeField] TextMeshProUGUI timeText;
+    [SerializeField] GameObject startPanel;
+    [SerializeField] GameObject endPanel;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI bestScoreText;
 
     // 프리팹
+    [Header("Prefabs")]
     [SerializeField] GameObject[] obstacles;
 
     // 변수
     public bool IsPlaying { get; private set; }
 
+    [Header("Variables")]
     [SerializeField] private float timeBetweenSpawn;
     [SerializeField][Range(0f, 1f)] private float randomRate;
     private float checkSpawnTime;
@@ -40,14 +48,14 @@ public class RunnerGameManager : MonoBehaviour
     {
         lookDragonVector = Camera.main.transform.position - dragon.position;
         checkSpawnTime = timeBetweenSpawn;
+
+        startPanel.SetActive(true);
+        timeText.gameObject.SetActive(false);
+        endPanel.SetActive(false);
     }
 
     private void Update()
     {
-        // 테스트용
-        if (Input.GetKeyDown(KeyCode.Space))
-            GameStart();
-
         // 드래곤을 따라가는 카메라
         Camera.main.transform.position = dragon.position + lookDragonVector;
 
@@ -68,6 +76,9 @@ public class RunnerGameManager : MonoBehaviour
     // 게임 시작
     public void GameStart()
     {
+        startPanel.SetActive(false);
+        timeText.gameObject.SetActive(true);
+
         IsPlaying = true;
         dragon.gameObject.GetComponent<DragonCotroller>().Init();
     }
@@ -77,6 +88,17 @@ public class RunnerGameManager : MonoBehaviour
     {
         IsPlaying = false;
         score = Mathf.FloorToInt(surviveTime);
+        MainGameManager.Instance.UpdateScore(MiniGame.DragonRunner, score);
+
+        bestScoreText.text = MainGameManager.Instance.GetPrefsData(MiniGame.DragonRunner, PrefsKey.BestScore).ToString();
+        scoreText.text = score.ToString();
+
+        endPanel.SetActive(true);
+    }
+
+    public void EndMiniGame()
+    {
+        MainGameManager.Instance.UnloadMiniGame(MiniGame.DragonRunner);
     }
 
     // 땅 타일맵 재배치
@@ -88,7 +110,7 @@ public class RunnerGameManager : MonoBehaviour
     // 장애물 스폰
     private void SpawnObstacle()
     {
-        GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)]);
+        GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)], transform);
         obstacle.transform.position += new Vector3(obstacleSpawnPosition.position.x, 0);
     }
 
