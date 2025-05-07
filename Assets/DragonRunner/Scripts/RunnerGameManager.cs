@@ -27,13 +27,12 @@ public class RunnerGameManager : MonoBehaviour
     [SerializeField] GameObject[] obstacles;
 
     // 변수
-    public bool IsPlaying { get; private set; }
-
     [Header("Variables")]
     [SerializeField] private float timeBetweenSpawn;
     [SerializeField][Range(0f, 1f)] private float randomRate;
-    private float checkSpawnTime;
 
+    public bool IsPlaying { get; private set; }
+    private float checkSpawnTime;
     private float surviveTime = 0;
     private int score = 0;
 
@@ -96,6 +95,7 @@ public class RunnerGameManager : MonoBehaviour
         endPanel.SetActive(true);
     }
 
+    // 미니 게임 종료
     public void EndMiniGame()
     {
         MainGameManager.Instance.UnloadMiniGame(MiniGame.DragonRunner);

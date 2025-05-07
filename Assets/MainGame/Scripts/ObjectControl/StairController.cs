@@ -9,7 +9,6 @@ public class StairController : MonoBehaviour
     // 외부 오브젝트
     [SerializeField] GameObject frontTile;
     [SerializeField] GameObject hideStair;
-
     Animator frontTileAnimator;
 
     // 변수

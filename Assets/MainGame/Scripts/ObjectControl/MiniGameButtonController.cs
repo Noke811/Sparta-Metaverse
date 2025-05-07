@@ -4,6 +4,7 @@ public class MiniGameButtonController : ButtonController
 {
     private bool isPlayMiniGame = false;
 
+    // 미니게임 오버 시에 계단 프론트타일 이동
     public void MiniGameOver()
     {
         stair.MoveFrontTile(true);

@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
         ActiveCurrentStage(currentStage);
     }
 
+    // 스테이지 변경
     public void ChangeCurrentStage()
     {
         player.transform.position = teleportPosition.position;
@@ -58,6 +59,7 @@ public class StageManager : MonoBehaviour
         ActiveCurrentStage(currentStage);
     }
 
+    // 현재 스테이지 활성화 / 다른 스테이지 비활성화
     private void ActiveCurrentStage(Stage stage)
     {
         for (int i = 0; i < stages.Length; i++)

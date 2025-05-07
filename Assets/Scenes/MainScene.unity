@@ -1629,7 +1629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 238c32cae4f3ff94fa57e66ea9250f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionScore: 
 --- !u!4 &268449264
 Transform:
   m_ObjectHideFlags: 0
@@ -7429,7 +7428,7 @@ GameObject:
   - component: {fileID: 592389155}
   - component: {fileID: 592389154}
   m_Layer: 0
-  m_Name: MissionNumber
+  m_Name: MissionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28481,7 +28480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1703845609
 Transform:
   m_ObjectHideFlags: 0
@@ -28888,7 +28887,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1910652426
 Transform:
   m_ObjectHideFlags: 0
@@ -36254,7 +36253,7 @@ Tilemap:
       - {fileID: 21300000, guid: be185207e81cf674897422fb40e317b1, type: 3}
       - {fileID: 21300000, guid: 42711337966c996438b149e7b66a3152, type: 3}
       - {fileID: 21300000, guid: 8d1b6a1c308e8034caf0cd63a43e4188, type: 3}
-      m_AnimationSpeed: 3.0000002
+      m_AnimationSpeed: 3
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 4, y: 5, z: 0}

@@ -23,6 +23,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    // 목적지에 가까워질수록 느려지는 카메라 이동
     private void MoveCamera()
     {
         transform.position = Vector3.Lerp(transform.position, targetPosition, 0.05f);
